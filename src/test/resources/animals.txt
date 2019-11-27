@@ -1,0 +1,6 @@
+ANIMALS
+sheep
+horse
+cow
+horse
+moose

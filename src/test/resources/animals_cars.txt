@@ -1,0 +1,13 @@
+ANIMALS
+sheep
+horse
+cow
+horse
+moose
+CARS
+AUDI
+BMW
+Audi
+VW
+OPEL
+Opel
