@@ -2,7 +2,6 @@ package com.kovalenko.task.collector.impl;
 
 import com.google.common.collect.ImmutableMap;
 import com.kovalenko.task.collector.Collector;
-import com.kovalenko.task.entity.Categories;
 import com.kovalenko.task.storage.DataStorage;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +14,9 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class NumberCollectorTest {
+public class NumbersCollectorTest {
+
+    private static final String CATEGORY_NUMBERS = "numbers";
 
     private DataStorage dataStorage;
 
@@ -39,7 +40,7 @@ public class NumberCollectorTest {
 
         numbers.forEach(numbersCollector::collect);
 
-        Map<String, Integer> actualResult = (Map<String, Integer>) dataStorage.get(Categories.NUMBERS);
+        Map<String, Integer> actualResult = (Map<String, Integer>) dataStorage.get(CATEGORY_NUMBERS);
 
         assertEquals(expectedNumbers, actualResult);
         assertEquals(5, actualResult.size());
@@ -51,7 +52,7 @@ public class NumberCollectorTest {
 
         numbers.forEach(numbersCollector::collect);
 
-        Map<String, Integer> actualResult = (Map<String, Integer>) dataStorage.get(Categories.NUMBERS);
+        Map<String, Integer> actualResult = (Map<String, Integer>) dataStorage.get(CATEGORY_NUMBERS);
 
         assertTrue(actualResult.isEmpty());
     }

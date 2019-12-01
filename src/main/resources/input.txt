@@ -24,3 +24,9 @@ Audi
 VW
 OPEL
 Opel
+NUMBERS_OCCURRENCES
+six: 4
+one: 3
+seven: 6
+three: 2
+two: 1

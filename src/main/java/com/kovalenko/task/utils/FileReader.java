@@ -1,5 +1,6 @@
 package com.kovalenko.task.utils;
 
+import com.google.common.base.Preconditions;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -14,9 +15,7 @@ public class FileReader {
 
     public static List<String> readFile(String fileName) {
         try (InputStream inputStream = FileReader.class.getClassLoader().getResourceAsStream(fileName)) {
-            if (inputStream == null) {
-                throw new IllegalArgumentException(String.format("File [%s] does not exist.", fileName));
-            }
+            Preconditions.checkArgument(inputStream != null, "File [%s] does not exist.", fileName);
             return IOUtils.readLines(inputStream, StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new IllegalArgumentException(e);

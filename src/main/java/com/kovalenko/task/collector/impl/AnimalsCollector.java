@@ -1,6 +1,5 @@
 package com.kovalenko.task.collector.impl;
 
-import com.kovalenko.task.entity.Categories;
 import com.kovalenko.task.collector.Collector;
 import com.kovalenko.task.container.Container;
 import com.kovalenko.task.container.impl.AnimalsContainer;
@@ -8,10 +7,12 @@ import com.kovalenko.task.storage.DataStorage;
 
 public class AnimalsCollector implements Collector {
 
-    private Container animals = new AnimalsContainer();
+    private static final String CATEGORY = "animals";
+
+    private Container<String> animals = new AnimalsContainer();
 
     public AnimalsCollector(DataStorage storage) {
-        storage.put(Categories.ANIMALS, animals);
+        storage.put(CATEGORY, animals);
     }
 
     @Override

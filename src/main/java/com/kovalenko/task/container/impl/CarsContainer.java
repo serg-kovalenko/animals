@@ -1,15 +1,14 @@
 package com.kovalenko.task.container.impl;
 
 import com.kovalenko.task.container.Container;
-import com.kovalenko.task.output.OutputWriter;
-import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-public class CarsContainer extends TreeMap<String, String> implements Container, OutputWriter {
+public class CarsContainer extends TreeMap<String, String> implements Container<Pair<String, String>> {
 
     private static final String OUTPUT_FORMAT = "%s: (%s)";
 
@@ -18,17 +17,12 @@ public class CarsContainer extends TreeMap<String, String> implements Container,
     }
 
     @Override
-    public void addItem(String item) {
-        this.putIfAbsent(item, DigestUtils.md5Hex(item));
+    public void addItem(Pair<String, String> car) {
+        this.putIfAbsent(car.getKey(), car.getValue());
     }
 
     @Override
     public String toString() {
-        return getFormattedData();
-    }
-
-    @Override
-    public String getFormattedData() {
         return this.entrySet().stream()
                 .map(this::mapToOutputLine)
                 .collect(Collectors.joining(System.lineSeparator()));

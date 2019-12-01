@@ -1,51 +1,57 @@
 package com.kovalenko.task;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.common.annotations.VisibleForTesting;
 import com.kovalenko.task.collector.Collector;
-import com.kovalenko.task.collector.impl.AnimalsCollector;
-import com.kovalenko.task.collector.impl.CarsCollector;
-import com.kovalenko.task.collector.impl.NumbersCollector;
-import com.kovalenko.task.entity.Categories;
 import com.kovalenko.task.storage.DataStorage;
+import com.kovalenko.task.utils.CollectorInitializer;
+import com.kovalenko.task.utils.Constant;
 import com.kovalenko.task.utils.FileReader;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Application {
 
-    private final DataStorage dataStorage = new DataStorage();
+    private static final String CATEGORY_COLLECTOR_PATTERN = "\\w+=.+";
 
-    private final Map<String, Collector> collectors = ImmutableMap.of(
-            Categories.ANIMALS.getValue(), new AnimalsCollector(dataStorage),
-            Categories.NUMBERS.getValue(), new NumbersCollector(dataStorage),
-            Categories.CARS.getValue(), new CarsCollector(dataStorage)
-    );
+    private final DataStorage dataStorage;
+
+    private Map<String, Collector> collectors;
 
     private List<String> fileData;
 
-    public void init(String inputFileName) {
+    public Application(DataStorage dataStorage) {
+        this.dataStorage = dataStorage;
+    }
+
+    public void init(String inputFileName, String applicationConfigFileName) {
         this.fileData = FileReader.readFile(inputFileName);
+        this.collectors = getCollectors(applicationConfigFileName);
     }
 
     public void execute() {
         Collector collector = null;
 
         for (String item : fileData) {
-            String normalizedItem = item.toLowerCase();
-            if (isCategoryItem(normalizedItem) && collector != null) {
-                collector.collect(item);
-                continue;
-            }
-            collector = collectors.get(normalizedItem);
+            collector = collectors.getOrDefault(item.toLowerCase(), collector);
+
+            Optional.of(item)
+                    .filter(this::isCategoryItem)
+                    .ifPresent(collector::collect);
         }
     }
 
     private boolean isCategoryItem(String item) {
-        return !collectors.containsKey(item);
+        return !collectors.containsKey(item.toLowerCase());
     }
 
-    public DataStorage getDataStorage() {
-        return dataStorage;
+    @VisibleForTesting
+    Map<String, Collector> getCollectors(String applicationConfigFileName) {
+        return FileReader.readFile(applicationConfigFileName).stream()
+                .filter(config -> config.matches(CATEGORY_COLLECTOR_PATTERN))
+                .map(config -> config.split(Constant.EQUALS, 2))
+                .collect(Collectors.toMap(pair -> pair[0], pair -> CollectorInitializer.initCollector(pair[1], dataStorage)));
     }
 }

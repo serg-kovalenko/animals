@@ -2,7 +2,6 @@ package com.kovalenko.task.collector.impl;
 
 import com.google.common.collect.Sets;
 import com.kovalenko.task.collector.Collector;
-import com.kovalenko.task.entity.Categories;
 import com.kovalenko.task.storage.DataStorage;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +15,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class AnimalsCollectorTest {
+
+    private static final String CATEGORY_ANIMALS = "animals";
 
     private DataStorage dataStorage;
 
@@ -34,7 +35,7 @@ public class AnimalsCollectorTest {
 
         animals.forEach(animalsCollector::collect);
 
-        Set<String> actualResult = (Set<String>) dataStorage.get(Categories.ANIMALS);
+        Set<String> actualResult = (Set<String>) dataStorage.get(CATEGORY_ANIMALS);
 
         assertEquals(expectedAnimals, actualResult);
         assertEquals(4, actualResult.size());
@@ -46,7 +47,7 @@ public class AnimalsCollectorTest {
 
         animals.forEach(animalsCollector::collect);
 
-        Set<String> actualResult = (Set<String>) dataStorage.get(Categories.ANIMALS);
+        Set<String> actualResult = (Set<String>) dataStorage.get(CATEGORY_ANIMALS);
 
         assertTrue(actualResult.isEmpty());
     }

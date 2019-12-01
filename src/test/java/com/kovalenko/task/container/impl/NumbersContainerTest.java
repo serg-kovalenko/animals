@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -19,7 +20,7 @@ public class NumbersContainerTest {
     private static final String TWO = "two";
     private static final String SIX = "six";
 
-    private Container container;
+    private Container<String> container;
 
     @Before
     public void setUp() {
@@ -38,6 +39,7 @@ public class NumbersContainerTest {
         numbers.forEach(container::addItem);
 
         assertEquals(expectedNumbers, container);
+        assertEquals(getFormattedData(expectedNumbers), container.toString());
     }
 
     @Test
@@ -61,5 +63,15 @@ public class NumbersContainerTest {
         numbers.forEach(container::addItem);
 
         assertTrue(container.isEmpty());
+    }
+
+    private String getFormattedData(Map<String, Integer> numbers) {
+        return numbers.entrySet().stream()
+                .map(this::mapToOutputLine)
+                .collect(Collectors.joining(System.lineSeparator()));
+    }
+
+    private String mapToOutputLine(Map.Entry<String, Integer> number) {
+        return String.format("%s: %d", number.getKey(), number.getValue());
     }
 }

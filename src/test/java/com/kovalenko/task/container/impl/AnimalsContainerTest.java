@@ -18,7 +18,7 @@ public class AnimalsContainerTest {
     private static final String HORSE = "horse";
     private static final String SHEEP = "sheep";
 
-    private Container container;
+    private Container<String> container;
 
     @Before
     public void setUp() {

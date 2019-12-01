@@ -3,19 +3,23 @@ package com.kovalenko.task.collector.impl;
 import com.kovalenko.task.collector.Collector;
 import com.kovalenko.task.container.Container;
 import com.kovalenko.task.container.impl.CarsContainer;
-import com.kovalenko.task.entity.Categories;
 import com.kovalenko.task.storage.DataStorage;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class CarsCollector implements Collector {
 
-    private Container cars = new CarsContainer();
+    private static final String CATEGORY = "cars";
+
+    private Container<Pair<String, String>> cars = new CarsContainer();
 
     public CarsCollector(DataStorage storage) {
-        storage.put(Categories.CARS, cars);
+        storage.put(CATEGORY, cars);
     }
 
     @Override
     public void collect(String item) {
-        cars.addItem(item.toLowerCase());
+        String lowerCaseCar = item.toLowerCase();
+        cars.addItem(Pair.of(lowerCaseCar, DigestUtils.md5Hex(lowerCaseCar)));
     }
 }

@@ -1,12 +1,11 @@
 package com.kovalenko.task.container.impl;
 
 import com.kovalenko.task.container.Container;
-import com.kovalenko.task.output.OutputWriter;
 
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-public class AnimalsContainer extends TreeSet<String> implements Container, OutputWriter {
+public class AnimalsContainer extends TreeSet<String> implements Container<String> {
 
     @Override
     public void addItem(String item) {
@@ -15,11 +14,7 @@ public class AnimalsContainer extends TreeSet<String> implements Container, Outp
 
     @Override
     public String toString() {
-        return getFormattedData();
-    }
-
-    @Override
-    public String getFormattedData() {
-        return this.stream().collect(Collectors.joining(System.lineSeparator()));
+        return this.stream()
+                .collect(Collectors.joining(System.lineSeparator()));
     }
 }

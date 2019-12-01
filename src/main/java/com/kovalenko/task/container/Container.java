@@ -1,8 +1,8 @@
 package com.kovalenko.task.container;
 
-public interface Container {
+public interface Container<T> {
 
-    void addItem(String item);
+    void addItem(T item);
 
     boolean isEmpty();
 }
