@@ -1,20 +1,32 @@
 package com.kovalenko.task.container.impl;
 
-import com.kovalenko.task.container.Container;
-
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-public class AnimalsContainer extends TreeSet<String> implements Container<String> {
+import com.kovalenko.task.container.Container;
+
+public class AnimalsContainer implements Container<String> {
+
+    private Set<String> container;
+
+    public AnimalsContainer() {
+        this.container = new TreeSet<>();
+    }
 
     @Override
     public void addItem(String item) {
-        this.add(item);
+        this.container.add(item);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.container.isEmpty();
     }
 
     @Override
     public String toString() {
-        return this.stream()
+        return this.container.stream()
                 .collect(Collectors.joining(System.lineSeparator()));
     }
 }

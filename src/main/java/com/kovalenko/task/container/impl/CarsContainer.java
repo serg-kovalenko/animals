@@ -1,29 +1,37 @@
 package com.kovalenko.task.container.impl;
 
-import com.kovalenko.task.container.Container;
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-public class CarsContainer extends TreeMap<String, String> implements Container<Pair<String, String>> {
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.kovalenko.task.container.Container;
+
+public class CarsContainer implements Container<Pair<String, String>> {
+
+    private Map<String, String> container;
 
     private static final String OUTPUT_FORMAT = "%s: (%s)";
 
     public CarsContainer() {
-        super(Comparator.reverseOrder());
+        this.container = new TreeMap<>(Comparator.reverseOrder());
     }
 
     @Override
     public void addItem(Pair<String, String> car) {
-        this.putIfAbsent(car.getKey(), car.getValue());
+        this.container.putIfAbsent(car.getKey(), car.getValue());
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.container.isEmpty();
     }
 
     @Override
     public String toString() {
-        return this.entrySet().stream()
+        return this.container.entrySet().stream()
                 .map(this::mapToOutputLine)
                 .collect(Collectors.joining(System.lineSeparator()));
     }
